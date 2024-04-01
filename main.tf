@@ -5,10 +5,11 @@ provider "aws" {
   access_key = "AKIAUCBAZNA6TUZ4XCHF" # Enter AWS IAM 
   secret_key = "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" # Enter AWS IAM 
 }
-# main.tf
-resource "aws_ecr_repository" "app_ecr_repo" {
-  name = "app-repo"
+
+variable "ecrname" {
+  default = "279241648189.dkr.ecr.us-east-1.amazonaws.com/app-repo:latest"
 }
+
 # main.tf
 resource "aws_ecs_cluster" "my_cluster" {
   name = "app-cluster" # Name your cluster here
@@ -20,7 +21,7 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "app-first-task",
-      "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "${var.ecrname}",
       "essential": true,
       "portMappings": [
         {
